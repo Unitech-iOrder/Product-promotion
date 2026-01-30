@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LG 二月經銷商進貨獎勵活動</title>
+    <style>
+        /* --- CSS 樣式設定 --- */
+        :root {
+            --primary-bg: linear-gradient(135deg, #0a2e52 0%, #005bea 100%); /* 深藍漸層背景 */
+            --text-color: #ffffff; /* 主要文字顏色 */
+            --highlight-color: #ffd700; /* 金色強調色，參考圖一 */
+            --accent-color: #00e5ff; /* 青色強調色，參考圖二 */
+            --card-bg: rgba(255, 255, 255, 0.1); /* 半透明卡片背景 */
+        }
+        body {
+            margin: 0;
+            font-family: 'Microsoft JhengHei', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+        }
+        /* 簡報容器 */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        /* 單張投影片 */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+            transform: scale(1.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            box-sizing: border-box;
+            pointer-events: none; /* 非活動頁面不響應鼠標 */
+        }
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 1;
+            pointer-events: auto;
+        }
+        /* 標題與文字樣式 */
+        h1 {
+            font-size: 3.5rem;
+            color: var(--highlight-color);
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--accent-color);
+        }
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            font-weight: 300;
+        }
+        /* 內容區塊樣式 */
+        .content-box {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: 4px solid var(--highlight-color);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 1000px;
+            width: 90%;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        /* 彈性佈局容器 */
+        .flex-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        /* 個別項目樣式 */
+        .item {
+            flex: 1 1 250px;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 15px;
+            transition: transform 0.3s;
+        }
+        .item:hover {
+            transform: translateY(-10px);
+        }
+        .item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+        .item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+        .price {
+            font-size: 1.8rem;
+            color: var(--highlight-color);
+            font-weight: bold;
+            margin: 0.5rem 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .note {
+            font-size: 0.9rem;
+            color: #ccc;
+            margin-top: 0.5rem;
+        }
+        ul {
+            text-align: left;
+            display: inline-block;
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        /* 導航按鈕 */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            font-size: 3rem;
+            padding: 1rem;
+            cursor: pointer;
+            z-index: 10;
+            border-radius: 50%;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .nav-btn:hover {
+            background: var(--highlight-color);
+            color: #0a2e52;
+            box-shadow: 0 0 15px var(--highlight-color);
+        }
+        .prev-btn { left: 2rem; }
+        .next-btn { right: 2rem; }
+        /* 頁碼指示器 */
+        .indicators {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.8rem;
+            z-index: 10;
+        }
+        .indicator {
+            width: 12px;
+            height: 12px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .indicator.active {
+            background: var(--highlight-color);
+            box-shadow: 0 0 10px var(--highlight-color);
+            transform: scale(1.2);
+        }
+        /* 響應式調整 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            h2 { font-size: 1.6rem; }
+            .subtitle { font-size: 1.1rem; }
+            .content-box { padding: 1.5rem; width: 95%; }
+            .nav-btn { font-size: 2rem; padding: 0.5rem; }
+            .prev-btn { left: 0.5rem; }
+            .next-btn { right: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slide active">
+            <h1>LG 二月經銷商進貨獎勵活動</h1>
+            <p class="subtitle">感謝夥伴支持，再衝旺季優惠！</p>
+            <div class="content-box" style="text-align: center;">
+                <img src="https://via.placeholder.com/900x450?text=LG+Promotion+Key+Visual" alt="LG 活動主視覺" style="max-width: 100%; border-radius: 15px; border: 3px solid var(--accent-color);">
+                <h2 style="margin-top: 2.5rem; font-size: 2.5rem; color: var(--highlight-color);">活動期間：2/2 - 2/28</h2>
+               <p style="font-size: 1.5rem; letter-spacing: 1px;"><span style="color: var(--accent-color);">限定 iOrder 下單</span> </p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>(一) 促銷組合活動</h2>
+           <p class="subtitle">歡慶全新代理 LG NB/LCD - iOrder 限定專屬組合 </p>
+            <div class="content-box">
+                <div class="flex-container" style="align-items: center;">
+                    <div class="item">
+                        <h3>LG NB + LCD 各一台</h3>
+                        <img src="https://via.placeholder.com/300x200?text=Any+LG+NB+%2B+LCD" alt="LG NB + LCD">
+                        <p>不限機種</p>
+                       <p class="note">(不含經銷商活動贈品)</p>
+                    </div>
+                    <div style="font-size: 4rem; color: var(--highlight-color); font-weight: bold;">+</div>
+                    <div class="item" style="border: 2px solid var(--highlight-color);">
+                        <h3 style="color: var(--highlight-color);">贈送：商用無線鍵鼠組</h3>
+                        <img src="https://via.placeholder.com/300x200?text=Gift:+MK370+Set" alt="MK370 無線鍵鼠組">
+                        <p class="price">市值 $1,590</p>
+                       <p>型號：MK370 </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>(一) 促銷組合活動</h2>
+           <p class="subtitle">LG Smart Monitor 斜槓機組合 (UT獨家代理) </p>
+            <div class="content-box">
+                <div class="flex-container">
+                    <div class="item">
+                        <h3>Lite 32 斜槓機組合</h3>
+                        <img src="https://via.placeholder.com/350x220?text=Lite+32+Combo+(32SR50F-W)" alt="Smart Monitor Lite 32 組合">
+                        <ul>
+                            <li>32SR50F-W (31.5吋 FHD)</li>
+                           <li>STA32F (專屬支架)</li>
+                        </ul>
+                        <p class="price">組合價 $9,654 <span style="font-size: 1rem;">未稅</span></p>
+                    </div>
+                    <div class="item" style="border: 2px solid var(--accent-color);">
+                        <h3 style="color: var(--accent-color);">4K Duo 32 斜槓機組合</h3>
+                        <img src="https://via.placeholder.com/350x220?text=4K+Duo+32+Combo+(32U720SA-W)" alt="Smart Monitor 4K Duo 32 組合">
+                        <ul>
+                            <li>32U720SA-W (31.5吋 4K)</li>
+                            <li>STA32F (專屬支架)</li>
+                           <li style="color: var(--highlight-color); font-weight: bold;">加贈：原廠置物盤</li>
+                        </ul>
+                        <p class="price" style="color: var(--accent-color);">組合價 $15,500 <span style="font-size: 1rem;">未稅</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>(二) 經銷商 NB 進貨獎勵活動</h2>
+           <p class="subtitle">LG gram NB 下單就送 MNT (限定 iOrder)</p>
+            <div class="content-box">
+                <div class="flex-container" style="align-items: center;">
+                    <div class="item">
+                        <h3>下單任一台 LG gram NB</h3>
+                        <img src="https://via.placeholder.com/350x250?text=Buy+Any+LG+gram+NB" alt="LG gram NB">
+                       <p class="note">*有支援價或專案價不列入活動範圍</p>
+                    </div>
+                    <div style="font-size: 4rem; color: var(--accent-color); font-weight: bold;">→</div>
+                    <div class="item" style="border: 2px solid var(--highlight-color);">
+                        <h3 style="color: var(--highlight-color);">贈送：24型平面顯示器</h3>
+                        <img src="https://via.placeholder.com/350x250?text=Get+Free+24MR400-B" alt="LG 24型顯示器">
+                        <p>型號：24MR400-B</p>
+                       <p>Full HD / IPS / 100Hz</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>(二) 經銷商 NB 進貨獎勵活動</h2>
+           <p class="subtitle">NB 滿台數再贈好禮 (次月發放，限定 iOrder)</p>
+            <div class="content-box">
+                <div class="flex-container" style="align-items: flex-end;">
+                    <div class="item" style="background: linear-gradient(to top, rgba(255,215,0,0.2), transparent);">
+                        <h3 style="color: var(--highlight-color); font-size: 1.8rem;">滿 5 台</h3>
+                        <img src="https://via.placeholder.com/250x180?text=YAMAHA+Mic+(YVC330)" alt="YAMAHA 會議麥克風" style="border-color: var(--highlight-color);">
+                        <p>送 YAMAHA 會議麥克風</p>
+                       <p class="price" style="font-size: 1.4rem;">市價 $10,625 </p>
+                    </div>
+                    <div class="item" style="background: linear-gradient(to top, rgba(255,215,0,0.3), transparent); padding-bottom: 3rem;">
+                        <h3 style="color: var(--highlight-color); font-size: 2rem;">滿 7 台</h3>
+                        <img src="https://via.placeholder.com/280x210?text=LG+55+TV+(55UM660H)" alt="LG 55型 4K 電視" style="border-color: var(--highlight-color);">
+                        <p>送 LG 55型 4K 商用電視</p>
+                       <p class="price" style="font-size: 1.6rem;">市價 $35,000 </p>
+                    </div>
+                    <div class="item" style="background: linear-gradient(to top, rgba(255,215,0,0.4), transparent); padding-bottom: 5rem; border: 2px solid var(--highlight-color);">
+                        <h3 style="color: var(--highlight-color); font-size: 2.2rem;">滿 10 台</h3>
+                        <img src="https://via.placeholder.com/320x240?text=LG+55%2B65+TVs+Bundle" alt="LG 55型 + 65型 4K 電視" style="border-color: var(--highlight-color);">
+                        <p>送 LG 55型 + 65型 4K 商用電視</p>
+                       <p class="price">市價 $80,000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>把握機會，立即行動！</h1>
+            <p class="subtitle" style="color: var(--accent-color);">活動期間：2/2 - 2/28</p>
+            <div class="content-box" style="text-align: center; padding: 4rem;">
+               <h2 style="color: var(--highlight-color); font-size: 3.5rem; margin-bottom: 2rem;">限定 iOrder 下單</h2>
+                <p style="font-size: 1.8rem; margin-top: 2rem;">請各位兄弟姐妹持續大力推廣與支持！</p>
+                <div style="margin-top: 4rem; display: flex; justify-content: center; gap: 2rem;">
+                    <img src="https://via.placeholder.com/180x60?text=LG+Logo" alt="LG Logo" style="border: none; filter: brightness(0) invert(1);">
+                    <img src="https://via.placeholder.com/180x60?text=iOrder+Logo" alt="iOrder Logo" style="border: none; filter: brightness(0) invert(1);">
+                </div>
+            </div>
+        </div>
+
+        <button class="nav-btn prev-btn" onclick="changeSlide(-1)">&#10094;</button>
+        <button class="nav-btn next-btn" onclick="changeSlide(1)">&#10095;</button>
+        <div class="indicators" id="indicators"></div>
+    </div>
+
+    <script>
+        // --- JavaScript 簡報控制邏輯 ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicatorsContainer = document.getElementById('indicators');
+
+        // 初始化：創建頁碼指示器
+        slides.forEach((_, index) => {
+            const indicator = document.createElement('div');
+            indicator.classList.add('indicator');
+            if (index === 0) indicator.classList.add('active');
+            indicator.onclick = () => goToSlide(index);
+            indicatorsContainer.appendChild(indicator);
+        });
+
+        const indicators = document.querySelectorAll('.indicator');
+
+        // 顯示指定索引的投影片
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                indicators[i].classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                    indicators[i].classList.add('active');
+                }
+            });
+        }
+
+        // 切換上一張/下一張投影片
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            showSlide(currentSlide);
+        }
+
+        // 跳轉到指定投影片
+        function goToSlide(index) {
+            currentSlide = index;
+            showSlide(currentSlide);
+        }
+
+        // 監聽鍵盤左右方向鍵事件
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+    </script>
+</body>
+</html>
