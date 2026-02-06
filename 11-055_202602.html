@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>龍馬精神 ‧ 一馬當先 | 筆電年度促銷</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f8f8;
+        }
+
+        .horse-theme-bg {
+            background: linear-gradient(135deg, #c41e3a 0%, #8b0000 100%);
+        }
+
+        .gold-text {
+            color: #d4af37;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 裝飾性元素 */
+        .deco-circle {
+            position: absolute;
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 50%;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Hero Section -->
+    <header class="horse-theme-bg text-white relative overflow-hidden py-12 px-4">
+        <div class="deco-circle w-64 h-64 -top-10 -left-10"></div>
+        <div class="deco-circle w-96 h-96 -bottom-20 -right-20"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-block border-2 border-[#d4af37] px-6 py-2 mb-6">
+                <span class="text-[#d4af37] tracking-[0.5em] font-bold">歲次甲午 · 龍馬精神</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 tracking-wider">一馬當先 ‧ 競速盛典</h1>
+            <p class="text-xl md:text-2xl mb-8 font-light text-red-100">高效筆電全面升級，助您事業學業馬到成功！</p>
+            
+            <div class="bg-[#d4af37] text-red-900 inline-block px-10 py-4 rounded-full shadow-2xl transform -rotate-2">
+                <span class="text-3xl font-black">指定機種 全面現折 $500</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 活動內容 -->
+    <main class="max-w-6xl mx-auto py-12 px-4">
+        <section class="mb-12 text-center">
+            <h2 class="text-3xl font-bold mb-2 flex items-center justify-center">
+                <span class="mr-4">🐎</span> 促銷機種清單 <span class="ml-4">🐎</span>
+            </h2>
+            <p class="text-gray-600 font-medium">精選家用、AI筆電、電競機種，限時優惠中</p>
+        </section>
+
+        <!-- 商品網格 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="product-grid">
+            <!-- 產品卡片將由 JavaScript 動代生成 -->
+        </div>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-gray-900 text-gray-400 py-12 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <p class="mb-4 text-gray-300">※ 本活動優惠僅適用於指定通路，售完為止。</p>
+            <p class="mb-8 text-gray-300">※ 產品規格以實際出貨為準。現折500元活動不得與其他優惠併用。</p>
+            <div class="border-t border-gray-800 pt-8">
+                <!-- 更新後的頁尾文字 -->
+                <p class="text-sm">iOrder 祝您~馬年順利♥馬上幸福☺馬上有好生意♥</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 商品資料列表，已加入經銷價(未稅)資料
+        const products = [
+            { id: "D11PBPA.", name: "HP Laptop 15-fd1515TU", spec: "U5-125H / 16G / 512G / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=D11PBPA.", price: "21,396" },
+            { id: "BH4F9PA.", name: "HP Laptop 14-ep1122TU", spec: "U5-125H / 32G / 512G / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BH4F9PA.", price: "24,977" },
+            { id: "BK2Y6PA.", name: "OmniBook 5 Flip 14-fp0044TU", spec: "C5-120U / 16G / 512G / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BK2Y6PA.", price: "28,558" },
+            { id: "C3QJ6PA.", name: "OmniBook 5 AI 16-af1093TU", spec: "U5-225U / 16G / 1TB / W11P", url: "https://iorder2.unitech.com.tw/ProductList?keyword=C3QJ6PA.", price: "32,139" },
+            { id: "BT4W1PA.", name: "Victus Gaming 15-fa2185TX", spec: "i5-13420H / 16G / 512G / RTX5050 / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BT4W1PA.", price: "32,139" },
+            { id: "BK2W3PA.", name: "OmniBook 5 Flip 14-fp0042TU", spec: "C7-150U / 16G / 1TB / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BK2W3PA.", price: "33,034" },
+            { id: "BY2J9PA.", name: "OmniBook 7 AI 14-fr0034TU", spec: "U5-225H / 16G / 1TB / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BY2J9PA.", price: "33,034" },
+            { id: "BQ2Q5PA.", name: "OmniBook 7 AI 14-fr0031TU", spec: "U5-225H / 16G / 1TB / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BQ2Q5PA.", price: "33,034" },
+            { id: "BK2Y0PA.", name: "OmniBook 5 NGAI 16-ag1033AU", spec: "AI5 340 / 16G / 1T / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BK2Y0PA.", price: "33,238" },
+            { id: "BT4W0PA.", name: "Victus Gaming 15-fa2184TX", spec: "i7-13260H / 16G / 512G / RTX5050 / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BT4W0PA.", price: "34,825" },
+            { id: "BX9Q1PA.", name: "OmniBook7 Aero AI 13-bg1090AU", spec: "AI5-340 / 16G / 1TB / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BX9Q1PA.", price: "35,143" },
+            { id: "BX9Q0PA.", name: "OmniBook7 Aero AI 13-bg1089AU", spec: "AI5-340 / 16G / 1TB / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BX9Q0PA.", price: "35,143" },
+            { id: "BM7C7PA.", name: "OmniBook X FlipNGAI 14-fm0061TU", spec: "U5-226V / 16G / 1T / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BM7C7PA.", price: "39,301" },
+            { id: "BQ2Q2PA.", name: "OmniBook 7 AI 14-fr0013TU", spec: "U7-255H / 32G / 1TB / W11P", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BQ2Q2PA.", price: "40,196" },
+            { id: "C3QJ5PA.", name: "OmniBook 5 AI 16-af1092TU", spec: "U7-255U / 32G / 1TB / W11P", url: "https://iorder2.unitech.com.tw/ProductList?keyword=C3QJ5PA.", price: "40,857" },
+            { id: "BX9P9PA.", name: "OmniBook 7 Aero AI 13-bg1088AU", spec: "AI7-350 / 32G / 1TB / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BX9P9PA.", price: "40,857" },
+            { id: "BM7C6PA.", name: "OmniBook X FlipNGAI 14-fm0060TU", spec: "U7-258V / 32G / 1T / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BM7C6PA.", price: "44,672" },
+            { id: "BK2Y1PA.", name: "OmniBook 7 AI 16-ay0005TX", spec: "U7-255H / 32G / 1TB / RTX4050 / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BK2Y1PA.", price: "48,253" },
+            { id: "B29VZPA.", name: "OmniBook Ultra Flip 14-fh0021TU", spec: "U7-258V / 32G / 1TB / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=B29VZPA.", price: "62,577" },
+            { id: "BT4W4PA.", name: "OMEN MAX Gaming 16-ak0083AX", spec: "AI9 375HX / 32G / 1TB / RTX5070Ti / W11", url: "https://iorder2.unitech.com.tw/ProductList?keyword=BT4W4PA.", price: "70,634" }
+        ];
+
+        const discountAmount = 500;
+        const grid = document.getElementById('product-grid');
+
+        products.forEach(p => {
+            const card = document.createElement('div');
+            card.className = "product-card bg-white border border-gray-200 rounded-lg p-6 shadow-sm flex flex-col justify-between";
+            
+            card.innerHTML = `
+                <div>
+                    <div class="text-lg font-bold text-red-700 mb-2 uppercase tracking-tighter">${p.id}</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 leading-tight">${p.name}</h3>
+                    <p class="text-sm text-gray-600 mb-4">${p.spec}</p>
+                </div>
+                <div class="mt-4 pt-4 border-t border-dotted border-gray-300">
+                    <div class="flex flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm">
+                                <span class="text-gray-500">經銷價(未稅):</span>
+                                <span class="font-bold text-gray-800">$${p.price}</span>
+                            </div>
+                            <span class="inline-block bg-red-100 text-red-700 text-xs px-2 py-1 rounded font-bold">
+                                現折 $${discountAmount}
+                            </span>
+                        </div>
+                        <a href="${p.url}" target="_blank" class="w-full bg-red-700 text-white px-4 py-2 rounded-md text-sm font-bold hover:bg-red-800 transition-colors inline-block text-center">
+                            查看詳情
+                        </a>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
